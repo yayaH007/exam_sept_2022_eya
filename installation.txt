@@ -1,0 +1,28 @@
+Le plus simple est d'utiliser une machine du cloud google comme vu en classe
+Prendre une machine de type e2-medium (et non micro comme montré en cours car vous aurez besoin de puissance pour compiler cryptopp)
+Choisir OS Debian 10, de cette maniere le projet existant compilera directement
+Choisir un disque systeme ssd
+
+Pour l'installation des moyens de developpement au dessus de Debian 10, executer les commandes suivantes:
+
+sudo apt-get update
+sudo apt-get install build-essential python3.7-dev python3-pip libtool autotools-dev libffi-dev
+sudo apt-get install git vim pkg-config libcairo2-dev
+
+
+Pour installer le debut de projet:
+git clone git@github.com:jluuM2/exam_sept_2022.git
+cd exam_sept_2022
+sudo python3 -m pip install -r requirements.txt
+
+pour compiler le projet existant:
+cd comp_decrypt_ecies/cryptopp
+make -j 4
+cd ../micro-ecc
+make
+cd ..
+make
+
+L'enoncé est dans sujet.py qui est aussi un programme de test pour lequel il faudra
+decommenter la derniere ligne pour tester votre travail
+python3 sujet.py
