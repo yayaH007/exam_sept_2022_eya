@@ -2,6 +2,9 @@ from ecies.utils import generate_eth_key, generate_key
 import ecies
 from coincurve.utils import hex_to_bytes
 import eth_keys
+
+import decryptage as d 
+
 eth_k = generate_eth_key()
 secret_key_hex = eth_k.to_hex()  # hex string
 public_key_hex = eth_k.public_key.to_hex()  # hex string

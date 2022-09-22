@@ -15,13 +15,14 @@
 #include <iostream>
 #include <sstream>
 using namespace CryptoPP;
+#include "convert.cpp"
 
 class Decrypt {
     private:
         std::string encryptedtext;
-	std::string PrivateKeyString;
-	std::string PublicKeyString1;
-	std::string PublicKeyString2;
+	    std::string PrivateKeyString;
+	    std::string PublicKeyString1;
+	    std::string PublicKeyString2;
         std::string plaintext;
         std::string DecryptorfilePublic = "ECIES_PublicKey.key"; //Chemin vers le fichier de stockage de la cle publique
         std::string DecryptorfilePrivate = "ECIES_PrivateKey.key"; //Chemin vers le fichier de stockage de la cle privee
@@ -86,20 +87,23 @@ class Decrypt {
 		return publicKey;
 	}
 
-        void DecryptText(std::string message){
-	    std::string em0;
-	    StringSource ss4(message, true, new HexDecoder(new StringSink(em0)));
+        //void DecryptText(std::string message){
+         std::string & DecryptText(std::string message){   //new line
+	        std::string em0;
+	        StringSource ss4(message, true, new HexDecoder(new StringSink(em0)));
             ECIES < ECP > ::Decryptor d0(privateKey);
             
             StringSource ss2(em0, true, new PK_DecryptorFilter(prng, d0, new StringSink(dm0)));
             plaintext = dm0;
 
-            std::cout << "Decrypted Message : " << dm0 << std::endl;
+            //std::cout << "Decrypted Message : " << dm0 << std::endl;
+            return dm0   //new line
         }
     
-        void PrintPrivateKey(){
+        //void PrintPrivateKey(){
+        std::string & PrivateKey(){   //new line
 		// Group parameters
-		ECIES < ECP > :: PrivateKey key = GetPrivateKey();
+		    ECIES < ECP > :: PrivateKey key = GetPrivateKey();
     		const DL_GroupParameters_EC<ECP>& params = key.GetGroupParameters();
     		// Base precomputation (for public key calculation from private key)
     		const DL_FixedBasePrecomputation<ECPPoint>& bpc = params.GetBasePrecomputation();
@@ -120,18 +124,19 @@ class Decrypt {
     		std::cout << "Public Point" << std::endl;
     		std::cout << "  x: " << std::hex << point.x << std::endl;
     		std::cout << "  y: " << std::hex << point.y << std::endl;
-		std::stringstream ss1;
-		ss1 << std::hex << point.x;
-		std::stringstream ss2;
-		ss2 << std::hex << point.y;
-		PublicKeyString1 = ss1.str();
-		PublicKeyString2 = ss2.str();
+		    std::stringstream ss1;
+		    ss1 << std::hex << point.x;
+		    std::stringstream ss2;
+		    ss2 << std::hex << point.y;
+		    PublicKeyString1 = ss1.str();
+		    PublicKeyString2 = ss2.str();
 
     		std::cout << "Private Exponent (multiplicand): " << std::endl;
     		std::cout << "  " << std::hex << key.GetPrivateExponent() << std::endl;
-		std::stringstream ss;
-		ss << std::hex << key.GetPrivateExponent();
-		PrivateKeyString = ss.str();
+		    std::stringstream ss;
+		    ss << std::hex << key.GetPrivateExponent();
+		    PrivateKeyString = ss.str();
+		    return PrivateKeyString  // new line
 	}
 
 	std::string GetPrivateKeyString(){
@@ -165,11 +170,14 @@ class Decrypt {
     		std::cout << "  x: " << std::hex << params.GetSubgroupGenerator().x << std::endl;
     		std::cout << "  y: " << std::hex << params.GetSubgroupGenerator().y << std::endl;
     
-   		std::cout << "Public Point" << std::endl;
+   		    std::cout << "Public Point" << std::endl;
     		std::cout << "  x: " << std::hex << point.x << std::endl;
     		std::cout << "  y: " << std::hex << point.y << std::endl;	
 	}
 };
+
+
+
 
 namespace py = pybind11;
 
